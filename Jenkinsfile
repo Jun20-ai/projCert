@@ -4,26 +4,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/jun20-ai/projCert.git'
+                checkout scm
             }
         }
-
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                dir('/var/lib/jenkins/workspace/PHP-app') {
+                    sh 'mvn clean install'
+                }
             }
         }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Post-build') {
-            steps {
-                echo 'CI Pipeline completed successfully!'
-            }
-        }
+        // Add additional stages here if needed
     }
 }
+
