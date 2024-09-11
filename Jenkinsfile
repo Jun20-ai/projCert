@@ -1,10 +1,10 @@
 pipeline {
-    agent any // This means the pipeline can run on any available agent
+    agent any // This specifies that the pipeline can run on any available agent
 
     stages {
         stage('Checkout') {
             steps {
-                git https://github.com/Jun20-ai/projCert.git'
+                git 'https://github.com/Jun20-ai/projCert.git'
             }
         }
         
