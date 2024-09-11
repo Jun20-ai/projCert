@@ -4,17 +4,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/Jun20-ai/projCert.git'
             }
         }
         stage('Build') {
             steps {
-                dir('/var/lib/jenkins/workspace/PHP-app') {
+                dir('') { // No need to change directory if pom.xml is in the root
                     sh 'mvn clean install'
                 }
             }
         }
-        // Add additional stages here if needed
+        stage('Test') {
+            steps {
+                // Add your test steps here
+            }
+        }
+        stage('Post-build') {
+            steps {
+                // Add post-build steps here
+            }
+        }
     }
 }
 
