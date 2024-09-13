@@ -1,33 +1,23 @@
 pipeline {
-    agent any // This specifies that the pipeline can run on any available agent
+    agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/Jun20-ai/projCert.git'
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
+                git url: 'https://github.com/jun20-ai/projCert.git'
             }
         }
 
-        stage('Test') {
+        stage('Build with Maven') {
             steps {
-                // Add test commands here if needed
-                echo 'Running tests...'
+                sh 'mvn clean package'
             }
         }
     }
 
     post {
-        success {
-            echo 'Build and tests succeeded!'
-        }
-        failure {
-            echo 'Build or tests failed!'
+        always {
+            echo 'Build complete.'
         }
     }
 }
