@@ -1,23 +1,38 @@
-pipeline {
+ pipeline {
     agent any
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/jun20-ai/projCert.git'
+                git 'https://github.com/Jun20-ai/projCert.git'
             }
         }
-
-        stage('Build with Maven') {
+        stage('Docker Build') {
             steps {
-                sh 'mvn clean package'
+                sh 'docker build -t my-app-image .'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Stop and remove the old container if it exists
+                sh 'docker stop my-app-container || true'
+                sh 'docker rm my-app-container || true'
+                
+                // Run the new container
+                sh 'docker run -d -p 8080:80 --name my-app-container my-app-image'
             }
         }
     }
 
     post {
         always {
-            echo 'Build complete.'
+            echo 'Deployment completed!'
+        }
+        success {
+            echo 'Deployment succeeded!'
+        }
+        failure {
+            echo 'Deployment failed!'
         }
     }
 }
